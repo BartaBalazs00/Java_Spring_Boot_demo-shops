@@ -1,20 +1,48 @@
 package com.demoproject.demoshops.service.products;
 
 import com.demoproject.demoshops.exceptions.ProductNotFoundException;
+import com.demoproject.demoshops.model.Category;
 import com.demoproject.demoshops.model.Product;
+import com.demoproject.demoshops.repository.CategoryRepository;
 import com.demoproject.demoshops.repository.ProductRepository;
+import com.demoproject.demoshops.request.AddProductsRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     @Override
-    public Product addProduct(Product product) {
-        return null;
+    public Product addProduct(AddProductsRequest request) {
+        //check if the category us found int the DB
+        //If yes, set it as the new product category
+        //if no, then save it as new category
+        //The set as the new product category
+
+        Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
+                .orElseGet(()->{
+                    Category newCategiry = new Category(request.getCategory().getName());
+                    return categoryRepository.save(newCategiry);
+                });
+        request.setCategory(category);
+
+        return productRepository.save(createProduct(request, category));
+    }
+
+    private Product createProduct(AddProductsRequest request, Category category){
+        return new Product(
+                request.getName(),
+                request.getBrand(),
+                request.getPrice(),
+                request.getInventory(),
+                request.getDescription(),
+                category
+        );
     }
 
     @Override

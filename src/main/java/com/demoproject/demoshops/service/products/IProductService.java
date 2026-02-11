@@ -1,11 +1,12 @@
 package com.demoproject.demoshops.service.products;
 
 import com.demoproject.demoshops.model.Product;
+import com.demoproject.demoshops.request.AddProductsRequest;
 
 import java.util.List;
 
 public interface IProductService {
-    Product addProduct(Product product);
+    Product addProduct(AddProductsRequest request);
     Product getProductById(Long id);
     void deleteProductById(Long id);
     void updateProduct(Product product, Long productId);
