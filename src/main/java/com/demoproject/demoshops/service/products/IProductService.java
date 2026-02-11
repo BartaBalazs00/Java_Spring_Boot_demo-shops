@@ -2,6 +2,7 @@ package com.demoproject.demoshops.service.products;
 
 import com.demoproject.demoshops.model.Product;
 import com.demoproject.demoshops.request.AddProductsRequest;
+import com.demoproject.demoshops.request.ProductUpdateRequest;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface IProductService {
     Product addProduct(AddProductsRequest request);
     Product getProductById(Long id);
     void deleteProductById(Long id);
-    void updateProduct(Product product, Long productId);
+    Product updateProduct(ProductUpdateRequest request, Long productId);
     List<Product> getAllProducts();
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByBrand(String brand);
