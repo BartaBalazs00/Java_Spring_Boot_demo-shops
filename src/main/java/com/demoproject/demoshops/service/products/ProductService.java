@@ -1,10 +1,15 @@
 package com.demoproject.demoshops.service.products;
 
+import com.demoproject.demoshops.exceptions.ProductNotFoundException;
 import com.demoproject.demoshops.model.Product;
 import com.demoproject.demoshops.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class ProductService implements IProductService {
     private ProductRepository productRepository;
     @Override
@@ -14,7 +19,8 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getProductById(Long id) {
-        return null;
+        return productRepository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("Product not found!"));
     }
 
     @Override
